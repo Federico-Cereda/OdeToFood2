@@ -1,0 +1,43 @@
+﻿@model OdeToFood.Data.Models.Ricetta
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Dettagli per @Model.Nome</h2>
+
+<div>
+    <h4>Ricetta</h4>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ingredienti)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ingredienti)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tempo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tempo) min
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Procedimento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Procedimento)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Modifica", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Indietro", "Index")
+</p>

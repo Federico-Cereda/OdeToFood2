@@ -1,0 +1,51 @@
+﻿@model IEnumerable<OdeToFood.Data.Models.Ricetta>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Ricette</h2>
+
+<p>
+    @Html.ActionLink("Nuova ricetta", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ingredienti)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Tempo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Procedimento)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ingredienti)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Tempo) minuti
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Procedimento)
+        </td>
+        <td>
+            @Html.ActionLink("Modifica", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Dettagli", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Elimina", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,53 @@
+﻿@model OdeToFood.Web.ViewModels.RistoranteViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Dettagli per @Html.DisplayFor(model => model.Nome)</h2>
+
+<div>
+    <h4>Ristorante</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nome)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CucinaTipi)
+        </dt>
+
+        <dd>
+            @foreach (var tipo in Model.CucinaTipi)
+            {
+                <li>@Html.DisplayFor(ModelTipo => tipo)</li>
+            }
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Indirizzo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Indirizzo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Citta)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Citta)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Modifica", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Indietro", "Index")
+</p>

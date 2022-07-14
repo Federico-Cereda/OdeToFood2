@@ -1,0 +1,12 @@
+﻿@model IEnumerable<OdeToFood.Data.Models.Ristorante>
+
+    @{
+        ViewBag.Title = "Home Page";
+    }
+
+    <div class="jumbotron">
+        <h1>Benvenuti nel mio sito</h1>
+        <div>
+            Ci sono @Model.Count() ristoranti nel database.
+        </div>
+    </div>

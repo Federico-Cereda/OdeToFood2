@@ -1,0 +1,32 @@
+﻿@model OdeToFood.Data.Models.Cucina
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Elimina</h2>
+
+<h3>Sei sicuro di voler eliminare @Model.Tipo ?</h3>
+<div>
+    <h4>Cucina</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Tipo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tipo)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Elimina" class="btn btn-default" /> |
+            @Html.ActionLink("Indietro", "Index")
+        </div>
+    }
+</div>
