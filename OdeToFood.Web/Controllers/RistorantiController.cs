@@ -135,6 +135,7 @@ namespace OdeToFood.Web.Controllers
         public ActionResult Delete(int id, FormCollection form)
         {
             ristoranteData.Delete(id);
+            cucinaRistoranteData.DeleteRistorante(id);
             return RedirectToAction("Index");
         }
     }

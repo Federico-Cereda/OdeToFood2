@@ -1,5 +1,6 @@
 ﻿using OdeToFood.Data.Models;
 using OdeToFood.Data.Services;
+using OdeToFood.Web.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,24 +11,43 @@ namespace OdeToFood.Web.Controllers
 {
     public class RicetteController : Controller
     {
-        private readonly IRicettaData db;
+        private readonly IRicettaData ricettaData;
+        private readonly IRicettaCucinaData ricettaCucinaData;
+        private readonly ICucinaData cucinaData;
 
-        public RicetteController(IRicettaData db)
+        public RicetteController(IRicettaData ricettaData, IRicettaCucinaData ricettaCucinaData, ICucinaData cucinaData)
         {
-            this.db = db;
+            this.ricettaData = ricettaData;
+            this.ricettaCucinaData = ricettaCucinaData;
+            this.cucinaData = cucinaData;
         }
 
         [HttpGet]
         public ActionResult Index()
         {
-            var model = db.GetAll();
+            var model = (from r in ricettaData.GetAll()
+                         join rc in ricettaCucinaData.GetAll() on r.Id equals rc.IdRicetta
+                         join c in cucinaData.GetAll() on rc.IdCucina equals c.Id
+                         orderby r.Id
+                         select new RicettaViewModel
+                         {
+                             Id = r.Id,
+                             Nome = r.Nome,
+                             Tipo = c.Tipo,
+                             Ingredienti = r.Ingredienti,
+                             Tempo = r.Tempo,
+                             Procedimento = r.Procedimento
+                         }).ToList();
+
             return View(model);
         }
 
         [HttpGet]
         public ActionResult Details(int id)
         {
-            var model = db.Get(id);
+            var ricetta = ricettaData.Get(id);
+            var tipo = ricettaCucinaData.Get(id);
+            var model = new RicettaViewModel { Id = ricetta.Id, Nome = ricetta.Nome, Tipo = tipo, Ingredienti = ricetta.Ingredienti, Tempo = ricetta.Tempo, Procedimento = ricetta.Procedimento };
             if (model == null)
             {
                 return View("NotFound");
@@ -38,17 +58,23 @@ namespace OdeToFood.Web.Controllers
         [HttpGet]
         public ActionResult Create()
         {
+            ViewBag.Cucine = cucinaData.GetAll().Select(x => x.Tipo);
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Ricetta ricetta)
+        public ActionResult Create(RicettaViewModel ricetta)
         {
             if (ModelState.IsValid)
             {
-                db.Add(ricetta);
-                return RedirectToAction("Details", new { id = ricetta.Id });
+                var ricettaA = new Ricetta() { Id = ricetta.Id, Nome = ricetta.Nome, Ingredienti = ricetta.Ingredienti, Tempo = ricetta.Tempo, Procedimento = ricetta.Procedimento };
+                var ricettaId = ricettaData.Add(ricettaA);
+                var cucinaId = cucinaData.GetAll().FirstOrDefault(x => x.Tipo == ricetta.Tipo).Id;
+                var ricettaCucina = new RicettaCucina() { IdRicetta = ricettaId, IdCucina = cucinaId };
+                ricettaCucinaData.Add(ricettaCucina);
+
+                return RedirectToAction("Details", new { id = ricettaId });
             }
             return View();
         }
@@ -56,7 +82,10 @@ namespace OdeToFood.Web.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            var model = db.Get(id);
+            ViewBag.Cucine = cucinaData.GetAll().Select(x => x.Tipo);
+            var ricetta = ricettaData.Get(id);
+            var tipo = ricettaCucinaData.Get(id);
+            var model = new RicettaViewModel { Id = ricetta.Id, Nome = ricetta.Nome, Tipo = tipo, Ingredienti = ricetta.Ingredienti, Tempo = ricetta.Tempo, Procedimento = ricetta.Procedimento };
             if (model == null)
             {
                 return HttpNotFound();
@@ -66,12 +95,14 @@ namespace OdeToFood.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Ricetta ricetta)
+        public ActionResult Edit(RicettaViewModel ricetta)
         {
             if (ModelState.IsValid)
             {
-                db.Update(ricetta);
-                TempData["Message"] = "Hai salvato la ricetta!";
+                var ricettaU = new Ricetta { Id = ricetta.Id, Nome = ricetta.Nome, Ingredienti = ricetta.Ingredienti, Tempo = ricetta.Tempo, Procedimento = ricetta.Procedimento };
+                ricettaData.Update(ricettaU);
+                ricettaCucinaData.Update(ricetta.Id, ricetta.Tipo);
+                TempData["Message"] = "Hai salvato le modifiche!";
                 return RedirectToAction("Details", new { id = ricetta.Id });
             }
             return View();
@@ -80,7 +111,7 @@ namespace OdeToFood.Web.Controllers
         [HttpGet]
         public ActionResult Delete(int id)
         {
-            var model = db.Get(id);
+            var model = ricettaData.Get(id);
             if (model == null)
             {
                 return View("NotFound");
@@ -92,7 +123,8 @@ namespace OdeToFood.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, FormCollection form)
         {
-            db.Delete(id);
+            ricettaData.Delete(id);
+            ricettaCucinaData.DeleteRicetta(id);
             return RedirectToAction("Index");
         }
     }

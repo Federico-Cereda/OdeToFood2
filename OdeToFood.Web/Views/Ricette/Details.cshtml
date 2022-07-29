@@ -1,4 +1,4 @@
-﻿@model OdeToFood.Data.Models.Ricetta
+﻿@model OdeToFood.Web.ViewModels.RicettaViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -10,6 +10,14 @@
     <h4>Ricetta</h4>
     <hr />
     <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tipo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tipo)
+        </dd>
 
         <dt>
             @Html.DisplayNameFor(model => model.Ingredienti)

@@ -39,6 +39,11 @@ namespace OdeToFood.Web
                    .InstancePerRequest();
             builder.RegisterType<OdeToFoodDbContext>().InstancePerRequest();
 
+            builder.RegisterType<SqlRicettaCucinaData>()
+                   .As<IRicettaCucinaData>()
+                   .InstancePerRequest();
+            builder.RegisterType<OdeToFoodDbContext>().InstancePerRequest();
+
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
             httpConfiguration.DependencyResolver = new AutofacWebApiDependencyResolver(container);

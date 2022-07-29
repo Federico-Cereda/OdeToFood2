@@ -37,5 +37,23 @@ namespace OdeToFood.Data.Services
                    where cr.IdRistorante == id
                    select cr.IdCucina;
         }
+
+        public void DeleteCucina(int id)
+        {
+            var cucine = from cr in db.CucineRistoranti
+                         where cr.IdCucina == id
+                         select cr;
+            db.CucineRistoranti.RemoveRange(cucine);
+            db.SaveChanges();
+        }
+
+        public void DeleteRistorante(int id)
+        {
+            var ristoranti = from cr in db.CucineRistoranti
+                             where cr.IdRistorante == id
+                             select cr;
+            db.CucineRistoranti.RemoveRange(ristoranti);
+            db.SaveChanges();
+        }
     }
 }

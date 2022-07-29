@@ -52,16 +52,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Cucina.cs" />
+    <Compile Include="Models\RicettaCucina.cs" />
     <Compile Include="Models\CucinaRistorante.cs" />
     <Compile Include="Models\Ristorante.cs" />
     <Compile Include="Models\Ricetta.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ICucinaData.cs" />
+    <Compile Include="Services\IRicettaCucinaData.cs" />
     <Compile Include="Services\ICucinaRistoranteData.cs" />
     <Compile Include="Services\IRistoranteData.cs" />
     <Compile Include="Services\IRicettaData.cs" />
     <Compile Include="Services\OdeToFoodDbContext.cs" />
     <Compile Include="Services\SqlCucinaData.cs" />
+    <Compile Include="Services\SqlRicettaCucinaData.cs" />
     <Compile Include="Services\SqlCucinaRistoranteData.cs" />
     <Compile Include="Services\SqlRistoranteData.cs" />
     <Compile Include="Services\SqlRicettaData.cs" />

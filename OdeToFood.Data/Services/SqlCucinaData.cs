@@ -1,6 +1,7 @@
 ﻿using OdeToFood.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,12 +28,6 @@ namespace OdeToFood.Data.Services
             var cucina = db.Cucine.Find(id);
             db.Cucine.Remove(cucina);
             db.SaveChanges();
-
-            var cucine = from cr in db.CucineRistoranti
-                         where cr.IdCucina == id
-                         select cr;
-            db.CucineRistoranti.RemoveRange(cucine);
-            db.SaveChanges();
         }
 
         public Cucina Get(int id)
@@ -45,6 +40,13 @@ namespace OdeToFood.Data.Services
             return from c in db.Cucine
                    orderby c.Id
                    select c;
+        }
+
+        public void Update(Cucina cucina)
+        {
+            var entry = db.Entry(cucina);
+            entry.State = EntityState.Modified;
+            db.SaveChanges();
         }
     }
 }

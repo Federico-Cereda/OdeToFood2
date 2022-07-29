@@ -10,17 +10,21 @@ namespace OdeToFood.Web.Controllers
 {
     public class CucineController : Controller
     {
-        private readonly ICucinaData db;
+        private readonly ICucinaData cucinaData;
+        private readonly ICucinaRistoranteData cucinaRistoranteData;
+        private readonly IRicettaCucinaData ricettaCucinaData;
 
-        public CucineController(ICucinaData db)
+        public CucineController(ICucinaData cucinaData, ICucinaRistoranteData cucinaRistoranteData, IRicettaCucinaData ricettaCucinaData)
         {
-            this.db = db;
+            this.cucinaData = cucinaData;
+            this.cucinaRistoranteData = cucinaRistoranteData;
+            this.ricettaCucinaData = ricettaCucinaData;
         }
 
         [HttpGet]
         public ActionResult Index()
         {
-            var model = db.GetAll();
+            var model = cucinaData.GetAll();
             return View(model);
         }
 
@@ -36,7 +40,32 @@ namespace OdeToFood.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Add(cucina);
+                cucinaData.Add(cucina);
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            var model = cucinaData.Get(id);
+
+            if (model == null)
+            {
+                return HttpNotFound();
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Cucina cucina)
+        {
+            if (ModelState.IsValid)
+            {
+                cucinaData.Update(cucina);
+                TempData["Message"] = "Hai salvato le modifiche!";
                 return RedirectToAction("Index");
             }
             return View();
@@ -45,7 +74,7 @@ namespace OdeToFood.Web.Controllers
         [HttpGet]
         public ActionResult Delete(int id)
         {
-            var model = db.Get(id);
+            var model = cucinaData.Get(id);
             if (model == null)
             {
                 return View("NotFound");
@@ -57,7 +86,9 @@ namespace OdeToFood.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, FormCollection form)
         {
-            db.Delete(id);
+            cucinaData.Delete(id);
+            cucinaRistoranteData.DeleteCucina(id); 
+            ricettaCucinaData.DeleteCucina(id);
             return RedirectToAction("Index");
         }
     }

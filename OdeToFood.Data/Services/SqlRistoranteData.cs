@@ -37,12 +37,6 @@ namespace OdeToFood.Data.Services
             var ristorante = db.Ristoranti.Find(id);
             db.Ristoranti.Remove(ristorante);
             db.SaveChanges();
-
-            var cucine = from cr in db.CucineRistoranti
-                         where cr.IdRistorante == id
-                         select cr;
-            db.CucineRistoranti.RemoveRange(cucine);
-            db.SaveChanges();
         }
 
         public Ristorante Get(int id)

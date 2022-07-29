@@ -1,4 +1,4 @@
-﻿@model OdeToFood.Data.Models.Ricetta
+﻿@model OdeToFood.Web.ViewModels.RicettaViewModel
 
 @{
     ViewBag.Title = "Create";
@@ -19,6 +19,15 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Tipo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Tipo, new SelectList(ViewBag.Cucine, "Tipo"), new { @class = "form-control" })
+                @*@Html.ListBoxFor(model => model.Tipo, new SelectList(ViewBag.Cucine, "Id", "Tipo"), new { @class = "form-control" })*@
+                @Html.ValidationMessageFor(model => model.Tipo, "", new { @class = "text-danger" })
             </div>
         </div>
 

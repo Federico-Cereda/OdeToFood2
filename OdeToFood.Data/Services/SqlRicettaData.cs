@@ -17,10 +17,11 @@ namespace OdeToFood.Data.Services
             this.db = db;
         }
 
-        public void Add(Ricetta ricetta)
+        public int Add(Ricetta ricetta)
         {
             db.Ricette.Add(ricetta);
             db.SaveChanges();
+            return ricetta.Id;
         }
 
         public void Delete(int id)
