@@ -11,7 +11,7 @@ namespace OdeToFood.Data.Services
     {
         IEnumerable<RicettaCucina> GetAll();
         string Get(int id);
-        void Add(RicettaCucina ricettaCucina);
+        void Add(int id, string tipo);
         void Update(int id, string tipo);
         void DeleteRicetta(int id);
         void DeleteCucina(int id);

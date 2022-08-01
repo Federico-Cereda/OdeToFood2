@@ -69,12 +69,9 @@ namespace OdeToFood.Web.Controllers
             if (ModelState.IsValid)
             {
                 var ricettaA = new Ricetta() { Id = ricetta.Id, Nome = ricetta.Nome, Ingredienti = ricetta.Ingredienti, Tempo = ricetta.Tempo, Procedimento = ricetta.Procedimento };
-                var ricettaId = ricettaData.Add(ricettaA);
-                var cucinaId = cucinaData.GetAll().FirstOrDefault(x => x.Tipo == ricetta.Tipo).Id;
-                var ricettaCucina = new RicettaCucina() { IdRicetta = ricettaId, IdCucina = cucinaId };
-                ricettaCucinaData.Add(ricettaCucina);
-
-                return RedirectToAction("Details", new { id = ricettaId });
+                var idR = ricettaData.Add(ricettaA);
+                ricettaCucinaData.Add(idR, ricetta.Tipo);
+                return RedirectToAction("Details", new { id = idR });
             }
             return View();
         }

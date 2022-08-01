@@ -17,19 +17,11 @@ namespace OdeToFood.Data.Services
             this.db = db;
         }
 
-        public int Add(Ristorante ristorante, IEnumerable<int> cucinaIds)
+        public int Add(Ristorante ristorante)
         {
             db.Ristoranti.Add(ristorante);
             db.SaveChanges();
-
-            foreach (var id in cucinaIds)
-            {
-                db.CucineRistoranti.Add(new CucinaRistorante { IdCucina = id, IdRistorante = ristorante.Id });
-            }
-            db.SaveChanges();
-
-            var idR = ristorante.Id;
-            return idR;
+            return ristorante.Id;
         }
 
         public void Delete(int id)
@@ -51,7 +43,7 @@ namespace OdeToFood.Data.Services
                    select r;
         }
 
-        public int Update(Ristorante ristorante, IEnumerable<int> cucinaIds)
+        public int Update(Ristorante ristorante)
         {
             var ristoranteUpdate = db.Ristoranti.Where(r => r.Id == ristorante.Id).FirstOrDefault();
             ristoranteUpdate.Nome = ristorante.Nome;
@@ -60,19 +52,7 @@ namespace OdeToFood.Data.Services
             var entry = db.Entry(ristoranteUpdate);
             entry.State = EntityState.Modified;
             db.SaveChanges();
-
-            var cucine = from cr in db.CucineRistoranti
-                         where cr.IdRistorante == ristorante.Id
-                         select cr;
-            db.CucineRistoranti.RemoveRange(cucine);
-            foreach (var id in cucinaIds)
-            {
-                db.CucineRistoranti.Add(new CucinaRistorante { IdCucina = id, IdRistorante = ristorante.Id });
-            }
-            db.SaveChanges();
-
-            var idR = ristorante.Id;
-            return idR;
+            return ristorante.Id;
         }
     }
 }

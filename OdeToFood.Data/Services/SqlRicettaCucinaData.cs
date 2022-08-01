@@ -17,8 +17,10 @@ namespace OdeToFood.Data.Services
             this.db = db;
         }
 
-        public void Add(RicettaCucina ricettaCucina)
+        public void Add(int id, string tipo)
         {
+            var cucinaId = db.Cucine.FirstOrDefault(x => x.Tipo == tipo).Id;
+            var ricettaCucina = new RicettaCucina() { IdRicetta = id, IdCucina = cucinaId };
             db.RicetteCucine.Add(ricettaCucina);
             db.SaveChanges();
         }

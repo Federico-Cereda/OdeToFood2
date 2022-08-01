@@ -23,6 +23,7 @@
             <li>@Html.DisplayFor(modelItem => item.Tipo)</li>
         </td>
         <td>
+            @Html.ActionLink("Modifica", "Edit", new { id = item.Id }) |
             @Html.ActionLink("Elimina", "Delete", new { id = item.Id })
         </td>
     </tr>

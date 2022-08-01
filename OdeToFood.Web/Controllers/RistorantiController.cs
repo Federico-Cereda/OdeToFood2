@@ -80,9 +80,9 @@ namespace OdeToFood.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var ristoranteAggiunto = new Ristorante() { Id = ristorante.Id, Nome = ristorante.Nome, Indirizzo = ristorante.Indirizzo, Citta = ristorante.Citta };
-                var cucinaIds = ristorante.CucinaIds;
-                var idR = ristoranteData.Add(ristoranteAggiunto, cucinaIds);
+                var ristoranteA = new Ristorante() { Id = ristorante.Id, Nome = ristorante.Nome, Indirizzo = ristorante.Indirizzo, Citta = ristorante.Citta };
+                var idR = ristoranteData.Add(ristoranteA);
+                cucinaRistoranteData.Add(idR, ristorante.CucinaIds);
                 return RedirectToAction("Details", new { id = idR });
             }
             return View();
@@ -111,8 +111,9 @@ namespace OdeToFood.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var ristoranteM = new Ristorante { Id = ristorante.Id, Nome = ristorante.Nome, Indirizzo = ristorante.Indirizzo, Citta = ristorante.Citta, };
-                var idR = ristoranteData.Update(ristoranteM, ristorante.CucinaIds);
+                var ristoranteU = new Ristorante { Id = ristorante.Id, Nome = ristorante.Nome, Indirizzo = ristorante.Indirizzo, Citta = ristorante.Citta, };
+                var idR = ristoranteData.Update(ristoranteU);
+                cucinaRistoranteData.Update(idR, ristorante.CucinaIds);
                 TempData["Message"] = "Hai salvato le modifiche!";
                 return RedirectToAction("Details", new { id = idR });
             }
