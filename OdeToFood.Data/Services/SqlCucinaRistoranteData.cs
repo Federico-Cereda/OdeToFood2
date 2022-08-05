@@ -56,11 +56,12 @@ namespace OdeToFood.Data.Services
             db.SaveChanges();
         }
 
-        public void Add(int id, IEnumerable<int> cucinaIds)
+        public void Add(int id, IEnumerable<string> CucinaTipi)
         {
-            foreach (var idC in cucinaIds)
+            foreach (var tipo in CucinaTipi)
             {
-                db.CucineRistoranti.Add(new CucinaRistorante { IdCucina = idC, IdRistorante = id });
+                var cucinaId = db.Cucine.FirstOrDefault(x => x.Tipo == tipo).Id;
+                db.CucineRistoranti.Add(new CucinaRistorante { IdCucina = cucinaId, IdRistorante = id });
             }
             db.SaveChanges();
         }

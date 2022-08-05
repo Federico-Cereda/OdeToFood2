@@ -70,8 +70,8 @@ namespace OdeToFood.Web.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            ViewBag.Cucine = cucinaData.GetAll();
-            return View();
+            var model = new RistoranteViewModel { CucinaTipi = cucinaData.GetAll().Select(x => x.Tipo) };
+            return View(model);
         }
 
         [HttpPost]
@@ -82,7 +82,7 @@ namespace OdeToFood.Web.Controllers
             {
                 var ristoranteA = new Ristorante() { Id = ristorante.Id, Nome = ristorante.Nome, Indirizzo = ristorante.Indirizzo, Citta = ristorante.Citta };
                 var idR = ristoranteData.Add(ristoranteA);
-                cucinaRistoranteData.Add(idR, ristorante.CucinaIds);
+                cucinaRistoranteData.Add(idR, ristorante.CucinaTipi);
                 return RedirectToAction("Details", new { id = idR });
             }
             return View();

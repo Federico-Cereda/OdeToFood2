@@ -20,6 +20,10 @@ namespace OdeToFood.Web.ViewModels
         [Display(Name = "Tipo di cucina")]
         public IEnumerable<string> CucinaTipi { get; set; }
 
+        public IEnumerable<bool> Selezionato { get; set; }
+
+        public bool Selezione { get; set; }
+
         public string Indirizzo { get; set; }
 
         [Display(Name = "Città")]
