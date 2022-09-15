@@ -1,4 +1,4 @@
-﻿@model IEnumerable<OdeToFood.Data.Models.Cucina>
+﻿@model IEnumerable<OdeToFood.Web.ViewModels.CucinaViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -14,13 +14,22 @@
         <th>
             @Html.DisplayNameFor(model => model.Tipo)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ricette)
+        </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            <li>@Html.DisplayFor(modelItem => item.Tipo)</li>
+            <div>@Html.DisplayFor(modelItem => item.Tipo)</div>
+        </td>
+        <td>
+            @foreach (var nome in item.Ricette)
+            {
+                <div>@Html.DisplayFor(modelTipo => nome)</div>
+            }
         </td>
         <td>
             @Html.ActionLink("Modifica", "Edit", new { id = item.Id }) |

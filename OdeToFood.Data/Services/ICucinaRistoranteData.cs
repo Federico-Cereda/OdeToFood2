@@ -4,17 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace OdeToFood.Data.Services
 {
     public interface ICucinaRistoranteData
     {
         IEnumerable<CucinaRistorante> GetAll();
-        IEnumerable<string> Get(int id);
-        IEnumerable<int> GetIds(int id);
+        List<SelectListItem> Get(int id);
+        List<SelectListItem> GetSelected(int id);
         void DeleteCucina(int id);
         void DeleteRistorante(int id);
-        void Add(int id, IEnumerable<string> CucinaTipi);
-        void Update(int id, IEnumerable<int> cucinaIds);
+        void Add(int id, List<SelectListItem> CucineIdTipo);
+        void Update(int id, List<SelectListItem> CucineIdTipo);
     }
 }

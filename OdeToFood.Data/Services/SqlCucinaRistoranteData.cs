@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace OdeToFood.Data.Services
 {
@@ -23,19 +24,45 @@ namespace OdeToFood.Data.Services
                    select cr;
         }
 
-        public IEnumerable<string> Get(int id)
+        public List<SelectListItem> Get(int id)
         {
-            return from cr in db.CucineRistoranti
-                   join c in db.Cucine on cr.IdCucina equals c.Id
-                   where cr.IdRistorante == id
-                   select c.Tipo;
-        }
+            var idCucine = from cr in db.CucineRistoranti
+                           join c in db.Cucine on cr.IdCucina equals c.Id
+                           where cr.IdRistorante == id
+                           select c.Id;
 
-        public IEnumerable<int> GetIds(int id)
+            var cucine = (from c in db.Cucine
+                          select new SelectListItem
+                          {
+                              Value = c.Id.ToString(),
+                              Text = c.Tipo,
+                              Selected = false
+                          }).ToList();
+
+            foreach (var cucina in cucine)
+            {
+                foreach (var idC in idCucine)
+                {
+                    if (int.Parse(cucina.Value) == idC)
+                    {
+                        cucina.Selected = true;
+                    }
+                }
+            }
+
+            return cucine;
+        }
+        public List<SelectListItem> GetSelected(int id)
         {
-            return from cr in db.CucineRistoranti
-                   where cr.IdRistorante == id
-                   select cr.IdCucina;
+            return (from cr in db.CucineRistoranti
+                    join c in db.Cucine on cr.IdCucina equals c.Id
+                    where cr.IdRistorante == id
+                    select new SelectListItem
+                    {
+                        Value = c.Id.ToString(),
+                        Text = c.Tipo,
+                        Selected = true
+                    }).ToList();
         }
 
         public void DeleteCucina(int id)
@@ -56,25 +83,31 @@ namespace OdeToFood.Data.Services
             db.SaveChanges();
         }
 
-        public void Add(int id, IEnumerable<string> CucinaTipi)
+        public void Add(int id, List<SelectListItem> CucineIdTipo)
         {
-            foreach (var tipo in CucinaTipi)
+            foreach (var tipo in CucineIdTipo)
             {
-                var cucinaId = db.Cucine.FirstOrDefault(x => x.Tipo == tipo).Id;
-                db.CucineRistoranti.Add(new CucinaRistorante { IdCucina = cucinaId, IdRistorante = id });
+                if (tipo.Selected == true)
+                {
+                    var cucinaId = int.Parse(tipo.Value);
+                    db.CucineRistoranti.Add(new CucinaRistorante { IdCucina = cucinaId, IdRistorante = id });
+                }
             }
             db.SaveChanges();
         }
 
-        public void Update(int id, IEnumerable<int> cucinaIds)
+        public void Update(int id, List<SelectListItem> CucineIdTipo)
         {
             var cucine = from cr in db.CucineRistoranti
                          where cr.IdRistorante == id
                          select cr;
             db.CucineRistoranti.RemoveRange(cucine);
-            foreach (var idC in cucinaIds)
+            foreach (var c in CucineIdTipo)
             {
-                db.CucineRistoranti.Add(new CucinaRistorante { IdCucina = idC, IdRistorante = id });
+                if (c.Selected == true)
+                {
+                    db.CucineRistoranti.Add(new CucinaRistorante { IdCucina = int.Parse(c.Value), IdRistorante = id });
+                }
             }
             db.SaveChanges();
         }

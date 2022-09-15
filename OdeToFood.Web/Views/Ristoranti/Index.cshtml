@@ -15,7 +15,10 @@
             @Html.DisplayNameFor(model => model.Nome)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CucinaTipi)
+            @Html.DisplayNameFor(model => model.CucineIdTipo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ricette)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Indirizzo)
@@ -32,9 +35,15 @@
             @Html.DisplayFor(modelItem => item.Nome)
         </td>
         <td>
-            @foreach (var tipo in item.CucinaTipi)
+            @foreach (var t in item.CucineIdTipo)
             {
-                <li>@Html.DisplayFor(modelTipo => tipo)</li>
+                <li>@Html.DisplayFor(modelCucinaTipi => t.Text)</li>
+            }
+        </td>
+        <td>
+            @foreach (var r in item.Ricette)
+            {
+                <li>@Html.DisplayFor(modelRicette => r)</li>
             }
         </td>
         <td>
@@ -44,9 +53,10 @@
             @Html.DisplayFor(modelItem => item.Citta)
         </td>
         <td>
-            @Html.ActionLink("Modifica", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Dettagli", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Elimina", "Delete", new { id=item.Id })
+            @Html.ActionLink("Modifica", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Modifica Ricette", "EditRicette", new { id = item.Id }) |
+            @Html.ActionLink("Dettagli", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Elimina", "Delete", new { id = item.Id })
         </td>
     </tr>
 }

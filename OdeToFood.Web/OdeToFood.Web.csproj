@@ -180,7 +180,9 @@
     </Compile>
     <Compile Include="Models\GreetingViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\RicettaModificaViewModel.cs" />
     <Compile Include="ViewModels\RicettaViewModel.cs" />
+    <Compile Include="ViewModels\CucinaViewModel.cs" />
     <Compile Include="ViewModels\RistoranteViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +240,7 @@
     <Content Include="Views\Cucine\Delete.cshtml" />
     <Content Include="Views\Cucine\NotFound.cshtml" />
     <Content Include="Views\Cucine\Edit.cshtml" />
+    <Content Include="Views\Ristoranti\EditRicette.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

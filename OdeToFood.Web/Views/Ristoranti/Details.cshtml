@@ -19,11 +19,22 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.CucinaTipi)
+            @Html.DisplayNameFor(model => model.CucineIdTipo)
         </dt>
 
         <dd>
-            @foreach (var tipo in Model.CucinaTipi)
+            @foreach (var tipo in Model.CucineIdTipo)
+            {
+                <li>@Html.DisplayFor(ModelTipo => tipo.Text)</li>
+            }
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ricette)
+        </dt>
+
+        <dd>
+            @foreach (var tipo in Model.Ricette)
             {
                 <li>@Html.DisplayFor(ModelTipo => tipo)</li>
             }
