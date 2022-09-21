@@ -37,7 +37,7 @@ namespace OdeToFood.Web.Controllers
                              Ingredienti = r.Ingredienti,
                              Tempo = r.Tempo,
                              Procedimento = r.Procedimento
-                         }).ToList();
+                         }).ToList().OrderBy(x => x.Tipo);
 
             return View(model);
         }

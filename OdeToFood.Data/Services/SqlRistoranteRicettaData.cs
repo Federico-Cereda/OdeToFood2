@@ -34,7 +34,6 @@ namespace OdeToFood.Data.Services
 
         public void Update(int idR, List<SelectListItem> cucineIdTipo)
         {
-            var ristorantiRicette = new List<RistoranteRicetta>();
             foreach (var c in cucineIdTipo)
             {
                 if (c.Selected == false)
@@ -45,14 +44,13 @@ namespace OdeToFood.Data.Services
                                    select rc.IdRicetta).ToList();
                     foreach (var r in ricette)
                     {
-                        var idRR = (from rr in db.RistorantiRicette
-                                    where rr.IdRicetta == r && rr.IdRistorante == idR
-                                    select rr).FirstOrDefault();
-                        ristorantiRicette.Add(idRR);
+                        var ristorantiRicette = from rr in db.RistorantiRicette
+                                                where rr.IdRicetta == r && rr.IdRistorante == idR
+                                                select rr;
+                        db.RistorantiRicette.RemoveRange(ristorantiRicette);
                     }
                 }
             }
-            db.RistorantiRicette.RemoveRange(ristorantiRicette);
             db.SaveChanges();
         }
 
